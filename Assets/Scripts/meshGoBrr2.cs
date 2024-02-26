@@ -9,6 +9,8 @@ public class meshGoBrr2 : MonoBehaviour
     // Radius of the circle
     public float radius;
 
+    public float hight;
+
     public Material materialToUse;
 
     void Start()
@@ -24,6 +26,8 @@ public class meshGoBrr2 : MonoBehaviour
         // Generate vertices in a circular pattern
         for (int i = 0; i < rings; i++)
         {
+            float rotationY = Random.Range(0f, 360f); // Random rotation for each ring
+
             for (int j = 0; j < numVertices; j++)
             {
                 // Calculate the angle for each vertex
@@ -32,17 +36,22 @@ public class meshGoBrr2 : MonoBehaviour
                 // Calculate the position of the vertex using trigonometry
                 float x = Mathf.Cos(angle) * ((i - rings - 1) / radius);
                 float z = Mathf.Sin(angle) * ((i - rings - 1) / radius);
+
+                // Apply random rotation around the y-axis
+                Vector3 vertexPosition = new Vector3(x, i * hight, z);
+                vertexPosition = Quaternion.Euler(0f, rotationY, 0f) * vertexPosition;
+
                 if (j == 0)
                 {
                     // Set the middel vertex position
-                    vertices[j + i * numVertices] = new Vector3(0, rings, 0);
-                    // Calculate middel UV coordinates based on vertex position
+                    vertices[j + i * numVertices] = new Vector3(0, rings * hight, 0);
+                    // Calculate middle UV coordinates based on vertex position
                     uvs[j + i * numVertices] = new Vector2(0.5f, 0.5f);
                 }
                 else
                 {
                     // Set the vertex position
-                    vertices[j + i * numVertices] = new Vector3(x, i, z);
+                    vertices[j + i * numVertices] = vertexPosition;
                     // Calculate UV coordinates based on vertex position
                     uvs[j + i * numVertices] = new Vector2((x + ((i - rings - 1) / radius)) / (((i - rings - 1) / radius) * 2), (z + ((i - rings - 1) / radius)) / (((i - rings - 1) / radius) * 2));
                 }
@@ -58,8 +67,6 @@ public class meshGoBrr2 : MonoBehaviour
                 triangles[baseIndex + 2] = j + i * numVertices; // Current vertex
             }
         }
-
-
 
         // Assign vertices to mesh
         mesh.vertices = vertices;
