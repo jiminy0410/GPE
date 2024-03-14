@@ -93,8 +93,8 @@ Material:
     - _RimPower: 20
     - _Scale: 0.226
     - _Smoothness: 0.1
-    - _SnowDepth: 0.1
-    - _SnowHeight: 0.1
+    - _SnowDepth: 1.5
+    - _SnowHeight: 0.25
     - _SnowTextureOpacity: 0.76
     - _SnowTextureScale: 0.269
     - _SparkCutoff: 0.7
@@ -115,7 +115,7 @@ Material:
     - _MainCol: {r: 0.5028248, g: 0, b: 1, a: 1}
     - _PathColor: {r: 0.16487186, g: 0.8342471, b: 0.8962264, a: 1}
     - _PathColorIn: {r: 1.5157166, g: 1.5157166, b: 1.5157166, a: 1}
-    - _PathColorOut: {r: 0.1878208, g: 0.09305898, b: 0.036889452, a: 1}
+    - _PathColorOut: {r: 0.50888145, g: 0.30054384, b: 0.16202943, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0.16826946, g: 0.07421358, b: 0.03433981, a: 1}
     - _ToonRamp: {r: 0.05549128, g: 0.16648202, b: 0.2735849, a: 1}

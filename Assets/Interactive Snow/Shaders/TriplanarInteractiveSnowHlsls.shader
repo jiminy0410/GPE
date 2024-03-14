@@ -110,7 +110,7 @@
 				
 				//lerp the colors using the RT effect path 
 				float3 path = lerp(_PathColorOut.rgb, _PathColorIn.rgb, saturate(effect.g * _PathBlending));
-				float3 mainColors = lerp(snowTex,path, saturate(effect.g)*0.5);
+				float3 mainColors = lerp(snowTex,path, saturate(effect.g));
 
 				// lighting and shadow information
 				float shadow = 0;
