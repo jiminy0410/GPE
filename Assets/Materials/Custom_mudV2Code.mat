@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2057855005473285849
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -20,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MudV2
-  m_Shader: {fileID: -6465566751694194690, guid: 97fba79883fafa644aa35d1c8749265f, type: 3}
+  m_Name: Custom_mudV2Code
+  m_Shader: {fileID: 4800000, guid: ceb4df0bad447d343bbeb28de2d32565, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,10 +28,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_74b13f41681c4eac93645ad9198f1599_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 0518683ad8223fb48a33a9c3a92a7a04, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ground:
+    - _TextureMud:
         m_Texture: {fileID: 2800000, guid: 0518683ad8223fb48a33a9c3a92a7a04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -62,12 +49,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DentColor: 0.63
-    - _MudBrightness: -0.47
+    - _DentColor: 0.19
+    - _MudBrightness: 1
     - _MudPower: 2
-    - _MudScale: 100
-    - _QueueControl: 0
+    - _MudScale: 0.1
+    - _QueueControl: -1
     - _QueueOffset: 0
-    - _vertexoffset: 0.2
-    m_Colors: []
+    - _vertexoffset: 0.39
+    m_Colors:
+    - _DentColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
   m_BuildTextureStacks: []
