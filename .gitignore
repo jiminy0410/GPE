@@ -10,6 +10,9 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+#Custom
+Assets/Textures/brown_mud
+
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
