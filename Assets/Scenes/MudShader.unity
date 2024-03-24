@@ -288,13 +288,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93825069}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.83630484, y: -0.4890715, z: -0.13658246, w: 0.20675726}
-  m_LocalPosition: {x: 0.841, y: 3.362, z: -3.56}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.149, y: 0.916, z: -6.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 208.648, y: 358.288, z: 659.799}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &132845162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3791748325853879361, guid: b94867705029be842bd92dce12670478, type: 3}
@@ -547,7 +547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1270,11 +1270,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1311,7 +1311,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 58d4ff1f588ed2e4f946d58ed78f0902, type: 2}
+      objectReference: {fileID: 2100000, guid: ce85b1132d70865479b149349c17df61, type: 2}
     - target: {fileID: 919132149155446097, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_Name
       value: mudFloor code
@@ -1565,7 +1565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
