@@ -63,7 +63,7 @@ Shader "Unlit/MudShaderV3"
                 float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * -_MudPower;
                 float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * -_MudScale;
                 float3 vert = v.vertex;
-                vert.z = (xMod + xNoice) / 2;
+                vert.y = (xMod + xNoice) / 2;
 
                 float4 worldPos = mul(unity_ObjectToWorld, vert);
                 worldPos.y += _vertexoffset;
@@ -97,15 +97,17 @@ Shader "Unlit/MudShaderV3"
                 // Sample the textures separately
                 fixed4 textureMudSideColor = tex2D(_TextureMudSide, i.uv);
                 fixed4 textureMudColor = tex2D(_TextureMud, i.uv);
+                fixed4 textureNoise = tex2D(_TextureNoice, i.uv);
+                fixed4 textureRT = tex2D(_RenderTexture, i.uv);
 
                 // Lerp between the sampled textures based on OutMultiply
-                fixed4 lerpedColor = lerp(textureMudSideColor, textureMudColor, OutMultiply);
+                fixed4 lerpedColor = lerp(textureMudSideColor, textureMudColor, (textureNoise + textureRT)/2);
 
                 // Sample the render texture to get information about dents
                 fixed4 dentInfo = tex2D(_RenderTexture, i.uv) * -1;
 
                 // Adjust the mud color based on dent information
-                lerpedColor.rgb -= _DentColor * dentInfo.rgb;
+                lerpedColor.rgb -= _DentColor;
 
                 // Apply fog
                 UNITY_APPLY_FOG(i.fogCoord, lerpedColor);

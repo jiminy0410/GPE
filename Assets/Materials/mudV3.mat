@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _mudside:
-        m_Texture: {fileID: 2800000, guid: db31c4a8d8dd295409353c4b6fe7ce84, type: 3}
+        m_Texture: {fileID: 2800000, guid: 729613be00d558443adfea61edd23996, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _normals:
@@ -85,14 +85,15 @@ Material:
     - _QueueOffset: 0
     - _color_blend: 0.53
     - _groundSmoothness: 0
-    - _mudsideamount: 0.76
+    - _mudsideamount: 1.88
+    - _mudsideamountTop: 2.41
     - _sideSmoothness: 1.09
     - _side_color_blend: 0.97
     - _swich_hight: 0.63
-    - _vertexoffset: 0.11
+    - _vertexoffset: 0.14
     m_Colors:
     - _groundCol: {r: 0.31132078, g: 0.17349647, b: 0.09545213, a: 1}
-    - _sideCol: {r: 0.4528302, g: 0.16508643, b: 0.0028479325, a: 1}
+    - _sideCol: {r: 0.6132076, g: 0.24528305, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3512710311289519935
 MonoBehaviour:

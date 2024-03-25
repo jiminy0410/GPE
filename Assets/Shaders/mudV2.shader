@@ -55,7 +55,7 @@ Shader "Unlit/MudShader"
                     float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * -_MudPower;
                     float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1))*-_DentColor;
                     float3 vert = v.vertex;
-                    vert.z = (xMod + xNoice)/2;
+                    vert.y = (xMod + xNoice)/2;
                     float4 worldPos = mul(unity_ObjectToWorld, vert);
                     worldPos.y += _vertexoffset;
                     vert = mul(unity_WorldToObject, worldPos);
