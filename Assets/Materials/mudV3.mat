@@ -85,8 +85,8 @@ Material:
     - _QueueOffset: 0
     - _color_blend: 0.53
     - _groundSmoothness: 0
-    - _mudsideamount: 1.88
-    - _mudsideamountTop: 2.41
+    - _mudsideamount: 1.15
+    - _mudsideamountTop: 0.39
     - _sideSmoothness: 1.09
     - _side_color_blend: 0.97
     - _swich_hight: 0.63
