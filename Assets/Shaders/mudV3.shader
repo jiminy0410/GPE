@@ -9,9 +9,10 @@ Shader "Unlit/MudShaderV3"
         _SwithHight("SwitchHight", Float) = 2
         _SwithAmount("SwithAmount", Float) = 2
         _TextureNoice("Noice", 2D) = "white" {}
-        _MudScale("MudScale", Float) = 100
+        _MudScaleRT("MudScaleRT", Float) = 100
+        _avgTextureColor("avgTextureColor", Color) = (0, 0, 0, 0)
         [NoScaleOffset] _RenderTexture("RenderTexture", 2D) = "white" {}
-        _DentColor("DentColor", Float) = 0.6
+        _ColorBrightness("ColorBrightness", Float) = 0.6
         _MudBrightness("MudBrightness", Float) = 1
     }
 
@@ -33,12 +34,14 @@ Shader "Unlit/MudShaderV3"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float3 normal : TEXCOORD1;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
@@ -47,44 +50,31 @@ Shader "Unlit/MudShaderV3"
             sampler2D _TextureMudSide;
             sampler2D _RenderTexture;
             sampler2D _TextureNoice;
-            float _MudScale;
+            float _MudScaleRT;
             float _SwithHight;
             float _vertexoffset;
             float _MudPower;
             float _MudBrightness;
-            float _DentColor;
+            float _ColorBrightness;
             float _SwithAmount;
             float4 OutMultiply;
+            float4 _avgTextureColor;
 
             v2f vert(appdata v)
             {
                 v2f o;
                 o.uv = v.uv;
-                float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * -_MudPower;
-                float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * -_MudScale;
+                o.normal = normalize(mul((float3x3)unity_WorldToObject, v.normal));
+                float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * _MudPower;
+                float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * _MudScaleRT;
                 float3 vert = v.vertex;
                 vert.y = (xMod + xNoice) / 2;
 
                 float4 worldPos = mul(unity_ObjectToWorld, vert);
-                worldPos.y += _vertexoffset;
-
-                // Sample the render texture to get information about the player's position
-                float4 renderTexColor = tex2D(_RenderTexture, o.uv);
-
-                // Convert from camera render texture to normal texture
-                float3 normalTexCoords = (renderTexColor.rgb - 0.5) * 2.0;
-
-                // Convert from tangent space to world space direction
-                float3 worldDirection = mul(float3x3(unity_WorldToObject[0].xyz, unity_WorldToObject[1].xyz, unity_WorldToObject[2].xyz), normalTexCoords);
-
-                // Split and take only the Y axis
-                float yPosition = worldDirection.y;
-        
-                // Calculate OutMultiply based on the first smoothstep
-                float OutMultiply1 = smoothstep((_SwithHight - 1), (_SwithHight + 1), abs(worldPos.y) * yPosition); // Smoothstep based on absolute world space position
-
-                // Calculate OutMultiply based on the second smoothstep using _SwithAmount
-                OutMultiply = smoothstep(0, (1 - _SwithAmount), OutMultiply1);
+                //_avgTextureColor = tex2D(_RenderTexture,o.uv.xy,0,1)* _MudScaleRT;
+                //worldPos.y -= _avgTextureColor;
+                _avgTextureColor = tex2D(_TextureNoice,o.uv.xy,0,1)* _MudPower;
+                worldPos.y -= _avgTextureColor + _vertexoffset;
 
                 vert = mul(unity_WorldToObject, worldPos);
                 o.vertex = UnityObjectToClipPos(vert);
@@ -95,24 +85,25 @@ Shader "Unlit/MudShaderV3"
             fixed4 frag(v2f i) : SV_Target
             {
                 // Sample the textures separately
-                fixed4 textureMudSideColor = tex2D(_TextureMudSide, i.uv);
-                fixed4 textureMudColor = tex2D(_TextureMud, i.uv);
-                fixed4 textureNoise = tex2D(_TextureNoice, i.uv);
-                fixed4 textureRT = tex2D(_RenderTexture, i.uv);
+                fixed4 textureMudSideTexX = tex2D(_TextureMudSide, i.uv);
+                fixed4 textureMudTexY = tex2D(_TextureMud, i.uv);
+                fixed4 textureMudSideTexZ = tex2D(_TextureMudSide, i.uv);
 
-                // Lerp between the sampled textures based on OutMultiply
-                fixed4 lerpedColor = lerp(textureMudSideColor, textureMudColor, (textureNoise + textureRT)/2);
+                fixed4 textureMudTex = tex2D(_TextureMud, i.uv);
 
-                // Sample the render texture to get information about dents
-                fixed4 dentInfo = tex2D(_RenderTexture, i.uv) * -1;
+                // Blend textures based on normal
+                float3 absNormal = abs(i.normal);
+                float3 blendFactors = absNormal / (absNormal.x + absNormal.y + absNormal.z);
+
+                fixed4 finalColor = textureMudSideTexX * blendFactors.x + textureMudTexY * blendFactors.y + textureMudSideTexZ * blendFactors.z;
 
                 // Adjust the mud color based on dent information
-                lerpedColor.rgb -= _DentColor;
+                finalColor.rgb += _ColorBrightness;
 
                 // Apply fog
-                UNITY_APPLY_FOG(i.fogCoord, lerpedColor);
+                UNITY_APPLY_FOG(i.fogCoord, finalColor);
 
-                return lerpedColor;
+                return finalColor;
             }
         ENDCG
         }
