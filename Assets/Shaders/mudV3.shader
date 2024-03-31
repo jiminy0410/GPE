@@ -64,7 +64,6 @@ Shader "Unlit/MudShaderV3"
             {
                 v2f o;
                 o.uv = v.uv;
-                o.normal = normalize(mul((float3x3)unity_WorldToObject, v.normal));
                 float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * _MudPower;
                 float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * _MudScaleRT;
                 float3 vert = v.vertex;
@@ -77,6 +76,11 @@ Shader "Unlit/MudShaderV3"
                 worldPos.y -= _avgTextureColor + _vertexoffset;
 
                 vert = mul(unity_WorldToObject, worldPos);
+
+                // Calculate the new normals
+                float3 objNormal = mul((float3x3)unity_WorldToObject, v.normal);
+                o.normal = normalize(objNormal);
+
                 o.vertex = UnityObjectToClipPos(vert);
                 UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
@@ -88,8 +92,6 @@ Shader "Unlit/MudShaderV3"
                 fixed4 textureMudSideTexX = tex2D(_TextureMudSide, i.uv);
                 fixed4 textureMudTexY = tex2D(_TextureMud, i.uv);
                 fixed4 textureMudSideTexZ = tex2D(_TextureMudSide, i.uv);
-
-                fixed4 textureMudTex = tex2D(_TextureMud, i.uv);
 
                 // Blend textures based on normal
                 float3 absNormal = abs(i.normal);
