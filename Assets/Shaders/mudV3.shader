@@ -70,8 +70,8 @@ Shader "Unlit/MudShaderV3"
                 vert.y = (xMod + xNoice) / 2;
 
                 float4 worldPos = mul(unity_ObjectToWorld, vert);
-                //_avgTextureColor = tex2D(_RenderTexture,o.uv.xy,0,1)* _MudScaleRT;
-                //worldPos.y -= _avgTextureColor;
+                _avgTextureColor = 0.5 * _MudScaleRT;
+                worldPos.y -= _avgTextureColor;
                 _avgTextureColor = tex2D(_TextureNoice,o.uv.xy,0,1)* _MudPower;
                 worldPos.y -= _avgTextureColor + _vertexoffset;
 

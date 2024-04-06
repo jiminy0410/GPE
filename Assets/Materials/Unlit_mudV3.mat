@@ -48,12 +48,12 @@ Material:
     - _ColorBrightness: 0.01
     - _DentColor: 0.07
     - _MudBrightness: -2.06
-    - _MudPower: 0.34
+    - _MudPower: 0.26
     - _MudScale: 0.14
-    - _MudScaleRT: -0.23
-    - _SwithAmount: 8.76
-    - _SwithHight: -0.13
-    - _vertexoffset: -0.29
+    - _MudScaleRT: -0.58
+    - _SwithAmount: 6.35
+    - _SwithHight: 8.09
+    - _vertexoffset: -0.1
     m_Colors:
     - _avgTextureColor: {r: 0.8113208, g: 0.38780108, b: 0.38780108, a: 0}
   m_BuildTextureStacks: []
