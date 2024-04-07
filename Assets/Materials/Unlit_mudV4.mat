@@ -23,8 +23,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Cube:
+        m_Texture: {fileID: 8900000, guid: 54a3a0570aebe8949bec4966f1376581, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RenderTexture:
-        m_Texture: {fileID: 8400000, guid: ec975d0d8b8f71a42a6ae045268167ae, type: 2}
+        m_Texture: {fileID: 8400000, guid: 0728595bd1a694243b4b47a4103eaca4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureMud:
@@ -32,7 +36,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureMudSide:
-        m_Texture: {fileID: 2800000, guid: 729613be00d558443adfea61edd23996, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1a729cd10c7ee474c9a672fd64c42012, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureNoice:
@@ -41,13 +45,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ColorBrightness: 0.01
-    - _MudBrightness: -2.06
+    - _ColorBrightness: 1.66
+    - _Metallic: 1
+    - _MetallicMud: 1
+    - _MetallicMudSide: 1
+    - _MudBrightness: 0.24
+    - _MudColorPower: 0
     - _MudPower: 0.26
-    - _MudScaleRT: -0.58
-    - _SwithAmount: 6.35
-    - _SwithHight: 8.09
+    - _MudScaleRT: -0.19
+    - _MudSideColorPower: -0.2
+    - _Smoothness: 0
+    - _SmoothnessMud: 1
+    - _SmoothnessMudSide: 1
+    - _SwithAmount: -0.79
+    - _SwithHight: 16.29
     - _vertexoffset: -0.1
     m_Colors:
+    - _MudSideTextureColor: {r: 0.18867922, g: 0.09575137, b: 0.026106538, a: 0}
+    - _MudTextureColor: {r: 0, g: 0, b: 0, a: 0}
     - _avgTextureColor: {r: 0.8113208, g: 0.38780108, b: 0.38780108, a: 0}
   m_BuildTextureStacks: []

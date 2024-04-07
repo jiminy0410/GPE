@@ -52,6 +52,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1a729cd10c7ee474c9a672fd64c42012, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _noice_hightmap:
+        m_Texture: {fileID: 2800000, guid: 4bedf4e825cf688429c3de2b2e313947, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _normals:
         m_Texture: {fileID: 2800000, guid: de6b569df57b92144a9ed899c926e5ac, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -70,20 +74,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DentColor: 100
+    - _DentColor: 0.16
     - _MudBrightness: 0.15
     - _MudPower: 1.27
-    - _MudScale: 1.38
+    - _MudScale: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _blend_RT_noice: 0.13
     - _color_blend: 0.45
-    - _groundSmoothness: 0.13
-    - _mudsideamount: 0.48
-    - _mudsideamountTop: 4.25
-    - _sideSmoothness: 1.47
-    - _side_color_blend: 1.04
-    - _swich_hight: 0.34
+    - _groundSmoothness: 0.35
+    - _matalic: 0.46
+    - _minSwitch: 0.31
+    - _mudsideamount: 0.93
+    - _mudsideamountTop: 4.7
+    - _sideSmoothness: 0.98
+    - _side_color_blend: 0.68
+    - _swich_hight: 0.61
     - _vertexoffset: -0.04
     m_Colors:
     - _groundCol: {r: 0.31132078, g: 0.17349647, b: 0.09545213, a: 1}

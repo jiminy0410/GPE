@@ -1,4 +1,4 @@
-Shader "Unlit/MudShaderV3"
+Shader "Unlit/MudShaderV4"
 {
     Properties
     {
@@ -11,103 +11,122 @@ Shader "Unlit/MudShaderV3"
         _TextureNoice("Noice", 2D) = "white" {}
         _MudScaleRT("MudScaleRT", Float) = 100
         _avgTextureColor("avgTextureColor", Color) = (0, 0, 0, 0)
+        _MudTextureColor("MudTextureColor", Color) = (0, 0, 0, 0)
+        _MudSideTextureColor("MudSideTextureColor", Color) = (0, 0, 0, 0)
+        _MudColorPower("MudColorPower", Float) = 2
+        _MudSideColorPower("MudSideColorPower", Float) = 2
         [NoScaleOffset] _RenderTexture("RenderTexture", 2D) = "white" {}
         _ColorBrightness("ColorBrightness", Float) = 0.6
         _MudBrightness("MudBrightness", Float) = 1
+        _SmoothnessMud("SmoothnessMud", Range(0, 1)) = 0.5
+        _SmoothnessMudSide("SmoothnessMudSide", Range(0, 1)) = 0.5
     }
 
-        SubShader
+    SubShader
+    {
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "AlphaTest+51" }
+        LOD 100
+
+        Pass
         {
-            Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "AlphaTest+51" }
-            LOD 100
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fog
 
-            Pass
+            #include "UnityCG.cginc"
+
+            struct appdata
             {
-                CGPROGRAM
-                #pragma vertex vert
-                #pragma fragment frag
-                // make fog work
-                #pragma multi_compile_fog
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv : TEXCOORD0;
+            };
 
-                #include "UnityCG.cginc"
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float3 normal : TEXCOORD1;
+                UNITY_FOG_COORDS(1)
+                float4 vertex : SV_POSITION;
+            };
 
-                struct appdata
-                {
-                    float4 vertex : POSITION;
-                    float3 normal : NORMAL;
-                    float2 uv : TEXCOORD0;
-                };
+            sampler2D _TextureMud;
+            sampler2D _TextureMudSide;
+            sampler2D _RenderTexture;
+            sampler2D _TextureNoice;
+            float _MudScaleRT;
+            float _SwithHight;
+            float _vertexoffset;
+            float _MudPower;
+            float _MudBrightness;
+            float _ColorBrightness;
+            float _SwithAmount;
+            float4 OutMultiply;
+            float4 _avgTextureColor;
+            float4 _MudTextureColor;
+            float4 _MudSideTextureColor;
+            float _MudColorPower;
+            float _MudSideColorPower;
+            float _SmoothnessMud;
+            float _SmoothnessMudSide;
 
-                struct v2f
-                {
-                    float2 uv : TEXCOORD0;
-                    float3 normal : TEXCOORD1;
-                    UNITY_FOG_COORDS(1)
-                    float4 vertex : SV_POSITION;
-                };
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.uv = v.uv;
+                float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * _MudPower;
+                float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * _MudScaleRT;
+                float3 vert = v.vertex;
+                vert.y = (xMod + xNoice) / 2;
 
-                sampler2D _TextureMud;
-                sampler2D _TextureMudSide;
-                sampler2D _RenderTexture;
-                sampler2D _TextureNoice;
-                float _MudScaleRT;
-                float _SwithHight;
-                float _vertexoffset;
-                float _MudPower;
-                float _MudBrightness;
-                float _ColorBrightness;
-                float _SwithAmount;
-                float4 OutMultiply;
-                float4 _avgTextureColor;
+                float4 worldPos = mul(unity_ObjectToWorld, vert);
+                _avgTextureColor = 0.5 * _MudScaleRT;
+                worldPos.y -= _avgTextureColor;
+                _avgTextureColor = tex2D(_TextureNoice,o.uv.xy,0,1) * _MudPower;
+                worldPos.y -= _avgTextureColor + _vertexoffset;
 
-                v2f vert(appdata v)
-                {
-                    v2f o;
-                    o.uv = v.uv;
-                    float xNoice = tex2Dlod(_TextureNoice, float4(o.uv.xy, 0, 1)) * _MudPower;
-                    float xMod = tex2Dlod(_RenderTexture, float4(o.uv.xy, 0, 1)) * _MudScaleRT;
-                    float3 vert = v.vertex;
-                    vert.y = (xMod + xNoice) / 2;
+                vert = mul(unity_WorldToObject, worldPos);
 
-                    float4 worldPos = mul(unity_ObjectToWorld, vert);
-                    _avgTextureColor = 0.5 * _MudScaleRT;
-                    worldPos.y -= _avgTextureColor;
-                    _avgTextureColor = tex2D(_TextureNoice,o.uv.xy,0,1) * _MudPower;
-                    worldPos.y -= _avgTextureColor + _vertexoffset;
-
-                    vert = mul(unity_WorldToObject, worldPos);
-
-                    // Calculate the new normals
-                    float3 objNormal = mul((float3x3)unity_WorldToObject, v.normal);
-                    o.normal = normalize(objNormal);
-
-                    o.vertex = UnityObjectToClipPos(vert);
-                    UNITY_TRANSFER_FOG(o, o.vertex);
-                    return o;
-                }
-
-                fixed4 frag(v2f i) : SV_Target
-                {
-                    // Sample the textures separately
-                    fixed4 textureMudSideTexX = tex2D(_TextureMudSide, i.uv);
-                    fixed4 textureMudTexY = tex2D(_TextureMud, i.uv);
-                    fixed4 textureMudSideTexZ = tex2D(_TextureMudSide, i.uv);
-
-                    // Blend textures based on normal
-                    float3 absNormal = abs(i.normal);
-                    float3 blendFactors = absNormal / (absNormal.x + absNormal.y + absNormal.z);
-
-                    fixed4 finalColor = textureMudSideTexX * blendFactors.x + textureMudTexY * blendFactors.y + textureMudSideTexZ * blendFactors.z;
-
-                    // Adjust the mud color based on dent information
-                    finalColor.rgb += _ColorBrightness;
-
-                    // Apply fog
-                    UNITY_APPLY_FOG(i.fogCoord, finalColor);
-
-                    return finalColor;
-                }
-            ENDCG
+                o.vertex = UnityObjectToClipPos(vert);
+                UNITY_TRANSFER_FOG(o, o.vertex);
+                return o;
             }
+
+            fixed4 frag(v2f i) : SV_Target
+            {
+                // Sample the mud texture
+                fixed4 textureMudTex = tex2D(_TextureMud, i.uv) + _MudTextureColor + _MudColorPower;
+                fixed4 textureMudSideTex = tex2D(_TextureMudSide, i.uv) + _MudSideTextureColor + _MudSideColorPower;
+
+                // Sample the render texture to get information about dents
+                fixed4 dentInfo = tex2D(_RenderTexture, i.uv)*-1;
+                fixed4 NoiceInfo = tex2D(_TextureNoice, i.uv);
+
+                fixed4 dentNoice = (dentInfo + NoiceInfo) * _SwithHight;
+
+                // Calculate grayscale value of dentNoice
+                float grayscaleValue = dot(dentNoice.rgb, float3(0.299, 0.587, 0.114));
+
+                // Determine whether it's closer to black or white
+                float adjustedValue = (grayscaleValue < _SwithAmount) ? 0 : 1;
+
+                // Set the final color to either black or white
+                fixed4 finalColor = fixed4(adjustedValue, adjustedValue, adjustedValue, 1);
+
+                // Sample smoothness values for both textures separately
+                textureMudTex.a = _SmoothnessMud;
+                textureMudSideTex.a = _SmoothnessMudSide;
+
+                // Blend between mud and mud side texture based on dentNoice
+                finalColor = lerp(textureMudSideTex,textureMudTex, finalColor);
+
+                // Apply fog
+                UNITY_APPLY_FOG(i.fogCoord, finalColor);
+                UNITY_OPAQUE_ALPHA(finalColor.a);
+                return finalColor;
+            }
+            ENDCG
         }
+    }
 }

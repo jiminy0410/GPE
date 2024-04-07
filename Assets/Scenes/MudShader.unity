@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44499245, g: 0.4945771, b: 0.5737002, a: 1}
+  m_IndirectSpecularColor: {r: 0.44499204, g: 0.49457628, b: 0.5736992, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1242,7 +1242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1902,7 +1902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 663e9d472630d1a47a47a06fed1ba8af, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2638,6 +2638,7 @@ GameObject:
   - component: {fileID: 1646729305}
   - component: {fileID: 1646729304}
   - component: {fileID: 1646729306}
+  - component: {fileID: 1646729307}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2745,6 +2746,22 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &1646729307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646729303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4665e758afdd049409a391e5de7abac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  daySpeed: 40
+  nightSpeed: 5
+  transitionPoint: 180
+  isDaytime: 1
 --- !u!4 &1812597033 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bfe892493c24fdf49b4f0e7582ec59ce, type: 3}
