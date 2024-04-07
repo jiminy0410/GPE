@@ -120,6 +120,7 @@ Shader "Unlit/MudShaderV4"
 
                 // Blend between mud and mud side texture based on dentNoice
                 finalColor = lerp(textureMudSideTex,textureMudTex, finalColor);
+                finalColor.a = lerp(textureMudSideTex.a,textureMudTex.a, finalColor.a);
 
                 // Apply fog
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);

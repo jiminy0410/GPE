@@ -55,8 +55,8 @@ Material:
     - _MudScaleRT: -0.19
     - _MudSideColorPower: -0.2
     - _Smoothness: 0
-    - _SmoothnessMud: 1
-    - _SmoothnessMudSide: 1
+    - _SmoothnessMud: 0.16
+    - _SmoothnessMudSide: 0.43
     - _SwithAmount: -0.79
     - _SwithHight: 16.29
     - _vertexoffset: -0.1
