@@ -59,7 +59,7 @@ Material:
     - _MudScale: 0.26
     - _QueueControl: -1
     - _QueueOffset: 0
-    - _vertexoffset: 0.39
+    - _vertexoffset: 0.26
     m_Colors:
     - _DentColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
   m_BuildTextureStacks: []

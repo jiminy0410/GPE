@@ -10,6 +10,7 @@ public class Example : MonoBehaviour
     }
     private void Update()
     {
+        mesh = GetComponent<MeshFilter>().mesh;
         mesh.RecalculateNormals();
     }
 }

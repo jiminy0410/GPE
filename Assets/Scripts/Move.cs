@@ -6,6 +6,8 @@ public class Move : MonoBehaviour
     public Rigidbody playerRb;
     public float moveSpeed;
     private Vector2 movementInput;
+    public bool jump;
+    public float jumpForce;
 
     void Start()
     {
@@ -15,12 +17,30 @@ public class Move : MonoBehaviour
     void Update()
     {
         movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        // Check if the spacebar is pressed
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Set jump to true
+            jump = true;
+        }
     }
+
     private void FixedUpdate()
     {
         if (movementInput != Vector2.zero)
         {
             Go(movementInput);
+        }
+
+        // Check if jump is true
+        if (jump)
+        {
+            // Apply vertical force to simulate jump
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            // Reset jump to false to prevent continuous jumping
+            jump = false;
         }
     }
 

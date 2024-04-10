@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RenderTexture:
-        m_Texture: {fileID: 8400000, guid: 0728595bd1a694243b4b47a4103eaca4, type: 2}
+        m_Texture: {fileID: 8400000, guid: 68eefd7525ec5f447ade379e59bbf77a, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureMud:
@@ -54,14 +54,19 @@ Material:
     - _MudPower: 0.26
     - _MudScaleRT: -0.19
     - _MudSideColorPower: -0.2
+    - _Shininess: 100
     - _Smoothness: 0
-    - _SmoothnessMud: 0.16
-    - _SmoothnessMudSide: 0.43
+    - _SmoothnessMud: 48.84
+    - _SmoothnessMudSide: 0
+    - _SpecularPower: 0
+    - _SunBrightness: 8
     - _SwithAmount: -0.79
     - _SwithHight: 16.29
     - _vertexoffset: -0.1
     m_Colors:
     - _MudSideTextureColor: {r: 0.18867922, g: 0.09575137, b: 0.026106538, a: 0}
     - _MudTextureColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _avgTextureColor: {r: 0.8113208, g: 0.38780108, b: 0.38780108, a: 0}
   m_BuildTextureStacks: []

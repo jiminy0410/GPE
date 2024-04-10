@@ -18,13 +18,14 @@ Shader "Unlit/MudShaderV4"
         [NoScaleOffset] _RenderTexture("RenderTexture", 2D) = "white" {}
         _ColorBrightness("ColorBrightness", Float) = 0.6
         _MudBrightness("MudBrightness", Float) = 1
-        _SmoothnessMud("SmoothnessMud", Range(0, 1)) = 0.5
-        _SmoothnessMudSide("SmoothnessMudSide", Range(0, 1)) = 0.5
+        _SpecColor("Color", Color) = (1.0,1.0,1.0)
+		_Shininess("Shininess", Float) = 10
+		_SunBrightness("SunBrightness", Float) = 2
     }
 
     SubShader
     {
-        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "AlphaTest+51" }
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "AlphaTest+51"}
         LOD 100
 
         Pass
@@ -46,9 +47,10 @@ Shader "Unlit/MudShaderV4"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float3 normal : TEXCOORD1;
+                float4 normal : TEXCOORD1;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float4 worldPos : TEXCOORD2;
             };
 
             sampler2D _TextureMud;
@@ -68,8 +70,10 @@ Shader "Unlit/MudShaderV4"
             float4 _MudSideTextureColor;
             float _MudColorPower;
             float _MudSideColorPower;
-            float _SmoothnessMud;
-            float _SmoothnessMudSide;
+            uniform float4 _SpecColor;
+			uniform float _Shininess;
+			uniform float _SunBrightness;
+            uniform float4 _LightColor0;
 
             v2f vert(appdata v)
             {
@@ -80,13 +84,14 @@ Shader "Unlit/MudShaderV4"
                 float3 vert = v.vertex;
                 vert.y = (xMod + xNoice) / 2;
 
-                float4 worldPos = mul(unity_ObjectToWorld, vert);
+                o.worldPos = mul(unity_ObjectToWorld, vert);
                 _avgTextureColor = 0.5 * _MudScaleRT;
-                worldPos.y -= _avgTextureColor;
+                o.worldPos.y -= _avgTextureColor;
                 _avgTextureColor = tex2D(_TextureNoice,o.uv.xy,0,1) * _MudPower;
-                worldPos.y -= _avgTextureColor + _vertexoffset;
+                o.worldPos.y -= _avgTextureColor + _vertexoffset;
 
-                vert = mul(unity_WorldToObject, worldPos);
+                vert = mul(unity_WorldToObject, o.worldPos);
+                o.normal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject));
 
                 o.vertex = UnityObjectToClipPos(vert);
                 UNITY_TRANSFER_FOG(o, o.vertex);
@@ -114,18 +119,29 @@ Shader "Unlit/MudShaderV4"
                 // Set the final color to either black or white
                 fixed4 finalColor = fixed4(adjustedValue, adjustedValue, adjustedValue, 1);
 
-                // Sample smoothness values for both textures separately
-                textureMudTex.a = _SmoothnessMud;
-                textureMudSideTex.a = _SmoothnessMudSide;
-
                 // Blend between mud and mud side texture based on dentNoice
                 finalColor = lerp(textureMudSideTex,textureMudTex, finalColor);
-                finalColor.a = lerp(textureMudSideTex.a,textureMudTex.a, finalColor.a);
 
+                // vectors
+				float3 normalDirection = i.normal;
+				float atten = 1.5;
+
+				// lighting
+				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+				float3 diffuseReflection = atten * _LightColor0.xyz * max(0.0, dot(normalDirection, lightDirection));
+
+				// specular direction
+				float3 lightReflectDirection = reflect(-lightDirection, normalDirection);
+				float3 viewDirection = normalize(float3(float4(_WorldSpaceCameraPos.xyz, 1.0) - i.worldPos.xyz));
+				float3 lightSeeDirection = max(0.0,dot(lightReflectDirection, viewDirection));
+				float3 shininessPower = pow(lightSeeDirection, _Shininess)*_SunBrightness;
+
+
+				float3 specularReflection = atten * _SpecColor.rgb  * shininessPower * ((adjustedValue-1)*-1);
+				float3 lightFinal = diffuseReflection + specularReflection + UNITY_LIGHTMODEL_AMBIENT;
                 // Apply fog
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
-                UNITY_OPAQUE_ALPHA(finalColor.a);
-                return finalColor;
+                return float4(lightFinal * finalColor.rgb, 1.0);
             }
             ENDCG
         }
