@@ -46,8 +46,8 @@ public class Move : MonoBehaviour
 
     void Go(Vector2 input)
     {
-        playerRb.AddForce(new Vector3(input.x, 0.1f, input.y).normalized * moveSpeed, ForceMode.Acceleration);
-        transform.position = new Vector3(transform.position.x + input.x * (moveSpeed) * 0.01f, transform.position.y, transform.position.z + input.y * (moveSpeed)*0.05f);
+        playerRb.AddForce(new Vector3(input.x, 0.3f, input.y).normalized * moveSpeed, ForceMode.Acceleration);
+        transform.position = new Vector3(transform.position.x + input.x * (moveSpeed) * 0.03f, transform.position.y, transform.position.z + input.y * (moveSpeed)*0.03f);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -4913,6 +4913,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerRb: {fileID: 649279621511217394}
   moveSpeed: 1
+  jump: 0
+  jumpForce: 3.5
 --- !u!54 &649279621511217394
 Rigidbody:
   m_ObjectHideFlags: 0
